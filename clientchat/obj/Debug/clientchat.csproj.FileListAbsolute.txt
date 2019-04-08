@@ -1,0 +1,5 @@
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\clientchat\bin\Debug\clientchat.exe.config
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\clientchat\bin\Debug\clientchat.exe
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\clientchat\bin\Debug\clientchat.pdb
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\clientchat\obj\Debug\clientchat.exe
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\clientchat\obj\Debug\clientchat.pdb

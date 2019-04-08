@@ -1,0 +1,6 @@
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\serverchat\bin\Debug\serverchat.exe.config
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\serverchat\bin\Debug\serverchat.exe
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\serverchat\bin\Debug\serverchat.pdb
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\serverchat\obj\Debug\serverchat.exe
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\serverchat\obj\Debug\serverchat.pdb
+c:\users\vova\documents\visual studio 2015\Projects\serverchat\serverchat\obj\Debug\serverchat.csprojResolveAssemblyReference.cache
