@@ -22,7 +22,8 @@ namespace serverchat.clientdiscovery
              
             todo:
             Console.Clear();
-            Console.WriteLine("Starting Upd receiving on port: " + serverListener.UdpPort);
+            Console.WriteLine("Starting Upd receiving on port: " + ServerListener.UdpPort);
+            Console.WriteLine("Starting TCP on ip and port: " + Sol.TcpIpAdress + ":" + Sol.TcpPort);
             Console.WriteLine("-------------------------------\n");
             Console.WriteLine("Current clients:\n");
 

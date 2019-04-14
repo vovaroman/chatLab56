@@ -1,0 +1,180 @@
+{
+  "protocol_version" : "0.0.1",
+  "configuration" : {
+    "version" : "5.14.0.177 (2018-04/f3a2216b65a Fri Aug  3 09:12:45 EDT 2018)",
+    "tlc" : "normal",
+    "sigsgev" : "altstack",
+    "notifications" : "kqueue",
+    "architecture" : "x86",
+    "disabled_features" : "none",
+    "smallconfig" : "disabled",
+    "bigarrays" : "disabled",
+    "softdebug" : "enabled",
+    "interpreter" : "enabled",
+    "llvm_support" : "3.6.0svn-mono-master/8b1520c8aae"
+  },
+  "memory" : {
+    "Resident Size" : "32448512",
+    "Virtual Size" : "683237376",
+    "minor_gc_time" : "0",
+    "major_gc_time" : "0",
+    "minor_gc_count" : "0",
+    "major_gc_count" : "0",
+    "major_gc_time_concurrent" : "0"
+  },
+  "threads" : [
+    {
+      "is_managed" : false,
+      "managed_thread_ptr" : "0x7b82203c",
+      "thread_info_addr" : "0x7b820c00",
+      "thread_name" : "Finalizer",
+      "native_thread_id" : "0xb01b4000",
+      "ctx" : {
+        "IP" : "0xa7ce520e",
+        "SP" : "0xb01b3e8c",
+        "BP" : "0xb01b3f08"
+      },
+      "unmanaged_frames" : [
+        {
+          "native_address" : "0xc034b"
+        },
+        {
+          "native_address" : "0x2163d7"
+        },
+        {
+          "native_address" : "0x12721c"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "0x21697a"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        }
+      ]
+    },
+    {
+      "is_managed" : false,
+      "managed_thread_ptr" : "0x7c821c3c",
+      "thread_info_addr" : "0x7c01f000",
+      "native_thread_id" : "0x589080",
+      "ctx" : {
+        "IP" : "0xa7ce87aa",
+        "SP" : "0xbffa4d6c",
+        "BP" : "0xbffa4de8"
+      },
+      "unmanaged_frames" : [
+        {
+          "native_address" : "0xc034b"
+        },
+        {
+          "native_address" : "0x2163d7"
+        },
+        {
+          "native_address" : "0x12721c"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "0xfe963"
+        },
+        {
+          "native_address" : "0xe8059"
+        },
+        {
+          "native_address" : "0xe7fbe"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        },
+        {
+          "native_address" : "0x14414"
+        },
+        {
+          "native_address" : "0x1f1a9a"
+        },
+        {
+          "native_address" : "0x1f51b2"
+        },
+        {
+          "native_address" : "0x1f3e35"
+        },
+        {
+          "native_address" : "0x83761"
+        },
+        {
+          "native_address" : "0x86bea"
+        },
+        {
+          "native_address" : "0x2807"
+        },
+        {
+          "native_address" : "0x2635"
+        },
+        {
+          "native_address" : "outside mono-sgen"
+        }
+      ]
+    },
+    {
+      "is_managed" : false,
+      "managed_thread_ptr" : "0x7b82343c",
+      "thread_info_addr" : "0x7b822800",
+      "thread_name" : "Debugger agent",
+      "native_thread_id" : "0xb02b6000",
+      "ctx" : {
+        "IP" : "0x2122c6",
+        "SP" : "0xb02b59c8",
+        "BP" : "0xb02b59c8"
+      },
+
+      }
+    ]}

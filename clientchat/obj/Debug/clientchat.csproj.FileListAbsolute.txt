@@ -1,5 +1,12 @@
-c:\users\vova\documents\visual studio 2015\Projects\serverchat\clientchat\bin\Debug\clientchat.exe.config
-c:\users\vova\documents\visual studio 2015\Projects\serverchat\clientchat\bin\Debug\clientchat.exe
-c:\users\vova\documents\visual studio 2015\Projects\serverchat\clientchat\bin\Debug\clientchat.pdb
-c:\users\vova\documents\visual studio 2015\Projects\serverchat\clientchat\obj\Debug\clientchat.exe
-c:\users\vova\documents\visual studio 2015\Projects\serverchat\clientchat\obj\Debug\clientchat.pdb
+c:/users/vova/documents/visual studio 2015/Projects/serverchat/clientchat/bin/Debug/clientchat.exe.config
+c:/users/vova/documents/visual studio 2015/Projects/serverchat/clientchat/bin/Debug/clientchat.exe
+c:/users/vova/documents/visual studio 2015/Projects/serverchat/clientchat/bin/Debug/clientchat.pdb
+c:/users/vova/documents/visual studio 2015/Projects/serverchat/clientchat/obj/Debug/clientchat.exe
+c:/users/vova/documents/visual studio 2015/Projects/serverchat/clientchat/obj/Debug/clientchat.pdb
+/Users/vr/Desktop/chatLab56/clientchat/bin/Debug/clientchat.exe.config
+/Users/vr/Desktop/chatLab56/clientchat/bin/Debug/clientchat.exe
+/Users/vr/Desktop/chatLab56/clientchat/bin/Debug/clientchat.pdb
+/Users/vr/Desktop/chatLab56/clientchat/obj/Debug/clientchat.csproj.CoreCompileInputs.cache
+/Users/vr/Desktop/chatLab56/clientchat/obj/Debug/clientchat.exe
+/Users/vr/Desktop/chatLab56/clientchat/obj/Debug/clientchat.pdb
+/Users/vr/Desktop/chatLab56/clientchat/obj/Debug/clientchat.csprojAssemblyReference.cache

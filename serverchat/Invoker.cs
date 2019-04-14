@@ -18,11 +18,12 @@ namespace serverchat
             var displayClients = new DisplayClients();
             var display = new Thread(() => {displayClients.Display(serverListener);});
 
-
-
+            var chat = new ChatListener();
+            var chatThread = new Thread(() => { chat.StartChat(serverListener.Clients); });
 
             receiveClients.Start();
             display.Start();
+            chatThread.Start();
             Console.ReadKey();
         }
     }

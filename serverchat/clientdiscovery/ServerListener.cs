@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
@@ -12,14 +11,14 @@ namespace serverchat.clientdiscovery
 {
     public class ServerListener
     {
-        public int UdpPort => 20000;
+        public static int UdpPort => 20000;
 
         public List<Client> Clients = new List<Client>();
-        
+        public static UdpClient receiver = new UdpClient(UdpPort);
+
+
         public void Listen()
         {
-          
-            UdpClient receiver = new UdpClient(UdpPort);
             receiver.BeginReceive(DataReceived, receiver);
 
         }
@@ -31,14 +30,22 @@ namespace serverchat.clientdiscovery
 
             // Convert data to ASCII and print in console
             var receivedText = Encoding.ASCII.GetString(receivedBytes);
+            string[] separators = new string[] { "||" };
+            var message = receivedText.Split(separators, StringSplitOptions.None);
+            var userUdp = new IPEndPoint(IPAddress.Parse(message[1]), int.Parse(message[2]));
             //Console.Write(receivedIpEndPoint + ": " + receivedText + Environment.NewLine);
-            var tempClient = new Client(receivedIpEndPoint, receivedText, DateTime.Now);
-            var client = Clients.FirstOrDefault(x => x.GUID == receivedText);
-            if(client == null)
-                Clients.Add(new Client(receivedIpEndPoint, receivedText, DateTime.Now));
+            var tempClient = new Client(userUdp, message[0], DateTime.Now);
+            var client = Clients.FirstOrDefault(x => x.GUID == message[0]);
+            if(client == null){
+                Clients.Add(new Client(userUdp, message[0], DateTime.Now));
+                var tcpClient = new TcpClient(receivedIpEndPoint.Address.ToString(), 30000);
+                string data = Sol.TcpIpAdress.ToString() + ":" + Sol.TcpPort;
+                NetworkStream nwStream = tcpClient.GetStream();
+                byte[] bytesToSend = Encoding.ASCII.GetBytes(data);
+                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+            }    
             else
                 client.LastPing = DateTime.Now;
-
             // Restart listening for udp data packages
             c.BeginReceive(DataReceived, ar.AsyncState);
         }
