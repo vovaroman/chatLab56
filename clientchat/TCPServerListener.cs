@@ -4,38 +4,38 @@ using System.Threading;
 
 namespace clientchat
 {
-    public class TCPServerListener
+    public class TcpServerListener
     {
-        public TCPServerListener(){}
+        public TcpServerListener(){}
 
-        private TcpListener listener = new TcpListener(sol.TcpIpAdress, sol.TcpPort);
+        private readonly TcpListener _listener = new TcpListener(sol.TcpIpAdress, sol.TcpPort);
 
         public void Listen(){
-            listener.Start();
+            _listener.Start();
 
-            while (true)
+            do
             {
-                Socket client = listener.AcceptSocket();
+                var client = _listener.AcceptSocket();
 
-                string tcpIpAndPort = string.Empty;
-                byte[] data = new byte[100];
-                int size = client.Receive(data);
-                for (int i = 0; i < size; i++)
+                var tcpIpAndPort = string.Empty;
+                var data = new byte[100];
+                var size = client.Receive(data);
+                for (var i = 0; i < size; i++)
                     tcpIpAndPort += Convert.ToChar(data[i]);
 
-                string[] separators = new string[] { ":" };
+                var separators = new string[] {":"};
                 var ipAndPort = tcpIpAndPort.Split(separators, StringSplitOptions.None);
 
-                if(sol.TCPServerIpAdress == string.Empty)
-                   sol.TCPServerIpAdress = ipAndPort[0];
-                if(sol.TCPServerPort == 0)
-                    sol.TCPServerPort = int.Parse(ipAndPort[1]);
+                if (sol.TcpServerIpAdress == string.Empty)
+                    sol.TcpServerIpAdress = ipAndPort[0];
+                if (sol.TcpServerPort == 0)
+                    sol.TcpServerPort = int.Parse(ipAndPort[1]);
 
-            }
+            } while (sol.TcpServerIpAdress == string.Empty);
         }
 
         public void Close(){
-            listener.Stop();
+            _listener.Stop();
         }
     }
 }

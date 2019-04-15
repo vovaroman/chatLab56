@@ -10,3 +10,8 @@ c:/users/vova/documents/visual studio 2015/Projects/serverchat/clientchat/obj/De
 /Users/vr/Desktop/chatLab56/clientchat/obj/Debug/clientchat.exe
 /Users/vr/Desktop/chatLab56/clientchat/obj/Debug/clientchat.pdb
 /Users/vr/Desktop/chatLab56/clientchat/obj/Debug/clientchat.csprojAssemblyReference.cache
+C:\Users\Vova\Desktop\chatLab56-master\clientchat\bin\Debug\clientchat.exe.config
+C:\Users\Vova\Desktop\chatLab56-master\clientchat\bin\Debug\clientchat.exe
+C:\Users\Vova\Desktop\chatLab56-master\clientchat\bin\Debug\clientchat.pdb
+C:\Users\Vova\Desktop\chatLab56-master\clientchat\obj\Debug\clientchat.exe
+C:\Users\Vova\Desktop\chatLab56-master\clientchat\obj\Debug\clientchat.pdb

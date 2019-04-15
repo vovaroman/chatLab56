@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="chat\Chat.cs" />
+    <Compile Include="chat\ChatUser.cs" />
     <Compile Include="clientdiscovery\Client.cs" />
     <Compile Include="clientdiscovery\DisplayClients.cs" />
     <Compile Include="clientdiscovery\ServerListener.cs" />

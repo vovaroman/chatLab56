@@ -1,52 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace clientchat
 {
     public class Invoker
     {
-        //static Random r = 
+        private static readonly string LocalServerIp = sol.GetLocalIpAddress().ToString();
 
-        private int UDPPort = GetRandomUnusedPort();
+        private static readonly Guid Guid = Guid.NewGuid();
+        private static readonly string Appguid = Guid.ToString().Remove(5);
+        private static readonly TcpServerListener TcpListener = new TcpServerListener();
+        public static UdpClient UdpServer;
 
-        private static int TCPPort => 888;
-        private static string localServerIp = GetLocalIPAddress();
+        private readonly int _udpPort = GetRandomUnusedPort();
+        public static Thread TcpListenThread = new Thread(() => TcpListener.Listen());
+        private static int UdpServerPort => 20000;
 
-        private static readonly Guid guid = Guid.NewGuid();
-        private static readonly string appguid = guid.ToString().Remove(5);
-        private int UDPServerPort => 20000;
-        private static TCPServerListener tcpListener = new TCPServerListener();
-        public Thread tcpListenThread = new Thread(() => tcpListener.Listen());
-        public static UdpClient udpServer;
+        private static string UdpServerAddress { get; set; }
+        private DateTime LastPingJob;
+
         private void PingServer()
         {
-            udpServer = new UdpClient(UDPPort);
-            string message = appguid + "||" + localServerIp + "||" + UDPPort;
-            ping:
-            udpServer.Send(Encoding.ASCII.GetBytes(message), message.Length, localServerIp, UDPServerPort);
-            udpServer.BeginReceive(DataReceived, udpServer);
-
-
-            if (sol.TCPServerIpAdress != string.Empty && sol.TCPServerPort != 0)
+            UdpServer = new UdpClient(_udpPort);
+            var message = Appguid + "||" + LocalServerIp + "||" + _udpPort;
+            while (true)
             {
-                tcpListenThread.Abort();
-                tcpListener.Close();
+                UdpServer.Send(Encoding.ASCII.GetBytes(message), message.Length, UdpServerAddress, UdpServerPort);
+                UdpServer.BeginReceive(DataReceived, UdpServer);
+
+
+                if (sol.TcpServerIpAdress != string.Empty && sol.TcpServerPort != 0)
+                {
+                    TcpListenThread.Abort();
+                    TcpListener.Close();
+                }
+                LastPingJob = DateTime.Now;
+                Thread.Sleep(2000);
             }
-            Thread.Sleep(2000);
-            goto ping;
         }
 
         private void DataReceived(IAsyncResult ar)
         {
-            var c = (UdpClient)ar.AsyncState;
-            var receivedIpEndPoint = new IPEndPoint(IPAddress.Parse(GetLocalIPAddress()), UDPPort);
+            var c = (UdpClient) ar.AsyncState;
+            var receivedIpEndPoint = new IPEndPoint(sol.GetLocalIpAddress(), _udpPort);
             var receivedBytes = c.EndReceive(ar, ref receivedIpEndPoint);
 
             // Convert data to ASCII and print in console
@@ -58,89 +57,83 @@ namespace clientchat
         //private TcpListener tcpListener = new TcpListener(IPAddress.Parse(GetLocalIPAddress()), 0);
         //private TcpClient client = null;
 
-        private void SendTCPMessage(string message, string contactID)
+        private static void SendTcpMessage(string message, string contactId)
         {
             try
             {
-                TcpClient client = new TcpClient(sol.TCPServerIpAdress, sol.TCPServerPort);
+                var client = new TcpClient(sol.TcpServerIpAdress, sol.TcpServerPort);
 
-                var port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
-                string data = contactID + "||" + message + "||" + appguid;
-                NetworkStream nwStream = client.GetStream();
-                byte[] bytesToSend = Encoding.ASCII.GetBytes(data);
+                var port = ((IPEndPoint) client.Client.RemoteEndPoint).Port;
+                var data = contactId + "||" + message + "||" + Appguid;
+                var nwStream = client.GetStream();
+                var bytesToSend = Encoding.ASCII.GetBytes(data);
                 nwStream.Write(bytesToSend, 0, bytesToSend.Length);
             }
-            catch(Exception ex){
-                Console.WriteLine("failed on message sending -" + ex.ToString());
+            catch (Exception ex)
+            {
+                Console.WriteLine("failed on message sending -" + ex);
             }
-
-
         }
 
-        public void ReceiveMessages()
+        private void CheckPingJob()
         {
-            
+            if (!((DateTime.Now - LastPingJob).TotalSeconds < 5)) return;
+            try
+            {
+                var listener = new TcpListener(sol.TcpIpAdress, sol.TcpPort);
+                listener.Start();
+                while (true)
+                {
+                    var client = listener.AcceptSocket();
+                }
+            }
+            catch { }
         }
-
 
         public void StartChat()
         {
+            Console.WriteLine("Input host:");
+            UdpServerAddress = Console.ReadLine();
             var ping = new ThreadStart(PingServer);
             var doPing = new Thread(ping);
+            doPing.Priority = ThreadPriority.Highest;
+            var checkPingJob = new Thread(CheckPingJob);
 
-            tcpListenThread.Start();
+            TcpListenThread.Start();
             doPing.Start();
-
-
-            //var tcpJob = new ThreadStart(tcpListener.Listen);
-            //var doListenTcp = new Thread(tcpJob);
-            //doListenTcp.Start();
+            checkPingJob.Start();
             Console.WriteLine(
-                $"'localServerIp' - {localServerIp} \n" +
-                $"'UDPPort' - {UDPPort}\n" +
-                $"'UDPServerPort' - {UDPServerPort}"
+                $"'localServerIp' - {LocalServerIp} \n" +
+                $"'UDPPort' - {_udpPort}\n" +
+                $"'UDPServerPort' - {UdpServerPort}"
             );
-            Console.WriteLine("ID: {0}", appguid);
-            Console.WriteLine("Press any key to start chat with somebody... If u want group chat you first message should be - 'Start'");
+            Console.WriteLine("ID: {0}", Appguid);
+            Console.WriteLine(
+                "Press any key to start chat with somebody... If u want group chat you first message should be - 'Start'");
             Console.ReadKey();
-            string contactId = string.Empty;
+            string contactId;
             do
             {
                 Console.WriteLine("Input contact id:");
                 contactId = Console.ReadLine();
             } while (contactId == string.Empty);
+
             Console.WriteLine(@"Write messages below. Command to stop chat - 'Stop chat'");
-            string message = string.Empty;
+            var message = string.Empty;
             do
             {
-                message = appguid + " - " +  Console.ReadLine();
-                SendTCPMessage(message,contactId);
+                message = Appguid + " - " + Console.ReadLine();
+                SendTcpMessage(message, contactId);
             } while (message != "Stop chat");
-
-        }
-
-        public static string GetLocalIPAddress()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("No network adapters with an IPv4 address in the system!");
         }
 
         public static int GetRandomUnusedPort()
         {
-            var listener = new TcpListener(IPAddress.Parse(localServerIp), 0);
+            var listener = new TcpListener(IPAddress.Parse(LocalServerIp), 0);
             listener.Start();
-            var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            var port = ((IPEndPoint) listener.LocalEndpoint).Port;
             listener.Stop();
             return port;
         }
-
-
     }
 }

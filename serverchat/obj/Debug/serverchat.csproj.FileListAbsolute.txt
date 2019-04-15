@@ -11,3 +11,9 @@ c:/users/vova/documents/visual studio 2015/Projects/serverchat/serverchat/obj/De
 /Users/vr/Desktop/chatLab56/serverchat/obj/Debug/serverchat.exe
 /Users/vr/Desktop/chatLab56/serverchat/obj/Debug/serverchat.pdb
 /Users/vr/Desktop/chatLab56/serverchat/obj/Debug/serverchat.csprojAssemblyReference.cache
+C:\Users\Vova\Desktop\chatLab56-master\serverchat\bin\Debug\serverchat.exe.config
+C:\Users\Vova\Desktop\chatLab56-master\serverchat\obj\Debug\serverchat.exe
+C:\Users\Vova\Desktop\chatLab56-master\serverchat\obj\Debug\serverchat.pdb
+C:\Users\Vova\Desktop\chatLab56-master\serverchat\bin\Debug\serverchat.exe
+C:\Users\Vova\Desktop\chatLab56-master\serverchat\bin\Debug\serverchat.pdb
+C:\Users\Vova\Desktop\chatLab56-master\serverchat\obj\Debug\serverchat.csprojResolveAssemblyReference.cache

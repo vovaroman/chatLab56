@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace serverchat.clientdiscovery
 {
@@ -11,7 +7,7 @@ namespace serverchat.clientdiscovery
     {
         public void ClearCurrentConsoleLine()
         {
-            int currentLineCursor = Console.CursorTop;
+            var currentLineCursor = Console.CursorTop;
             Console.SetCursorPosition(0, Console.CursorTop);
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, currentLineCursor);
@@ -19,7 +15,6 @@ namespace serverchat.clientdiscovery
 
         public void Display(ServerListener serverListener)
         {
-             
             todo:
             Console.Clear();
             Console.WriteLine("Starting Upd receiving on port: " + ServerListener.UdpPort);
@@ -30,14 +25,10 @@ namespace serverchat.clientdiscovery
             lock (serverListener.Clients)
             {
                 foreach (var client in serverListener.Clients)
-                {
                     if ((DateTime.Now - client.LastPing).TotalSeconds < 3)
-                    {
                         Console.WriteLine($"IP - {client.IP} Client ID - {client.GUID}\n");
-                    }
-                }
             }
-            
+
 
             Thread.Sleep(3000);
             goto todo;

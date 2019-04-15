@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using serverchat.clientdiscovery;
+
 namespace serverchat
 {
     public class Invoker
@@ -13,10 +10,10 @@ namespace serverchat
         {
             var serverListener = new ServerListener();
             var listener = new ThreadStart(serverListener.Listen);
-            var receiveClients = new Thread(new ThreadStart(listener));
+            var receiveClients = new Thread(listener);
 
             var displayClients = new DisplayClients();
-            var display = new Thread(() => {displayClients.Display(serverListener);});
+            var display = new Thread(() => { displayClients.Display(serverListener); });
 
             var chat = new ChatListener();
             var chatThread = new Thread(() => { chat.StartChat(serverListener.Clients); });
