@@ -27,7 +27,7 @@ namespace serverchat.clientdiscovery
                 {
                     string[] separators = {":"};
                     var ipAndPort = user.IP.ToString().Split(separators, StringSplitOptions.None);
-                    var address = clients.FirstOrDefault(x => user.IP.ToString().Contains(x.IP.Port.ToString()));
+                    var address = clients.FirstOrDefault(x => x.GUID == user.Guid);
                     if (address != null && author.Guid != user.Guid)
                         chat._messages.ForEach(message =>
                         {
