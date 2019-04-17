@@ -16,7 +16,6 @@ namespace clientchat
             do
             {
                 var client = _listener.AcceptSocket();
-
                 var tcpIpAndPort = string.Empty;
                 var data = new byte[100];
                 var size = client.Receive(data);

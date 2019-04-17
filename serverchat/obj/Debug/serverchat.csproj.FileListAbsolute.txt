@@ -17,3 +17,6 @@ C:\Users\Vova\Desktop\chatLab56-master\serverchat\obj\Debug\serverchat.pdb
 C:\Users\Vova\Desktop\chatLab56-master\serverchat\bin\Debug\serverchat.exe
 C:\Users\Vova\Desktop\chatLab56-master\serverchat\bin\Debug\serverchat.pdb
 C:\Users\Vova\Desktop\chatLab56-master\serverchat\obj\Debug\serverchat.csprojResolveAssemblyReference.cache
+C:\Users\Vova\Desktop\chatLab56\serverchat\bin\Debug\serverchat.exe.config
+C:\Users\Vova\Desktop\chatLab56\serverchat\obj\Debug\serverchat.exe
+C:\Users\Vova\Desktop\chatLab56\serverchat\obj\Debug\serverchat.pdb
