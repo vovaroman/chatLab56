@@ -9,7 +9,7 @@ namespace serverchat.clientdiscovery
 {
     public class ServerListener
     {
-        public static UdpClient receiver = new UdpClient(UdpPort);
+        public static UdpClient Receiver = new UdpClient(UdpPort);
 
         public List<Client> Clients = new List<Client>();
         public static int UdpPort => 20000;
@@ -17,7 +17,7 @@ namespace serverchat.clientdiscovery
 
         public void Listen()
         {
-            receiver.BeginReceive(DataReceived, receiver);
+            Receiver.BeginReceive(DataReceived, Receiver);
         }
 
         private void DataReceived(IAsyncResult ar)
@@ -32,8 +32,7 @@ namespace serverchat.clientdiscovery
             var message = receivedText.Split(separators, StringSplitOptions.None);
             var userUdp = new IPEndPoint(IPAddress.Parse(message[1]), int.Parse(message[2]));
             //Console.Write(receivedIpEndPoint + ": " + receivedText + Environment.NewLine);
-            var tempClient = new Client(userUdp, message[0], DateTime.Now);
-            var client = Clients.FirstOrDefault(x => x.GUID == message[0]);
+            var client = Clients.FirstOrDefault(x => x.Guid == message[0]);
             if (client == null)
             {
                 Clients.Add(new Client(userUdp, message[0], DateTime.Now));

@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace clientchat
 {
     public class TcpServerListener
     {
-        public TcpServerListener(){}
+        private readonly TcpListener _listener = new TcpListener(Sol.TcpIpAdress, Sol.TcpPort);
 
-        private readonly TcpListener _listener = new TcpListener(sol.TcpIpAdress, sol.TcpPort);
-
-        public void Listen(){
+        public void Listen()
+        {
             _listener.Start();
 
             do
@@ -22,18 +20,18 @@ namespace clientchat
                 for (var i = 0; i < size; i++)
                     tcpIpAndPort += Convert.ToChar(data[i]);
 
-                var separators = new string[] {":"};
+                var separators = new[] {":"};
                 var ipAndPort = tcpIpAndPort.Split(separators, StringSplitOptions.None);
 
-                if (sol.TcpServerIpAdress == string.Empty)
-                    sol.TcpServerIpAdress = ipAndPort[0];
-                if (sol.TcpServerPort == 0)
-                    sol.TcpServerPort = int.Parse(ipAndPort[1]);
-
-            } while (sol.TcpServerIpAdress == string.Empty);
+                if (Sol.TcpServerIpAdress == string.Empty)
+                    Sol.TcpServerIpAdress = ipAndPort[0];
+                if (Sol.TcpServerPort == 0)
+                    Sol.TcpServerPort = int.Parse(ipAndPort[1]);
+            } while (Sol.TcpServerIpAdress == string.Empty);
         }
 
-        public void Close(){
+        public void Close()
+        {
             _listener.Stop();
         }
     }

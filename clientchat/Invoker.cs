@@ -8,19 +8,19 @@ namespace clientchat
 {
     public class Invoker
     {
-        private static readonly string LocalServerIp = sol.GetLocalIpAddress().ToString();
+        private static readonly string LocalServerIp = Sol.GetLocalIpAddress().ToString();
 
         private static readonly Guid Guid = Guid.NewGuid();
         private static readonly string Appguid = Guid.ToString().Remove(5);
         private static readonly TcpServerListener TcpListener = new TcpServerListener();
         public static UdpClient UdpServer;
+        public static Thread TcpListenThread = new Thread(() => TcpListener.Listen());
 
         private readonly int _udpPort = GetRandomUnusedPort();
-        public static Thread TcpListenThread = new Thread(() => TcpListener.Listen());
+        private DateTime _lastPingJob;
         private static int UdpServerPort => 20000;
 
         private static string UdpServerAddress { get; set; }
-        private DateTime LastPingJob;
 
         private void PingServer()
         {
@@ -32,12 +32,12 @@ namespace clientchat
                 UdpServer.BeginReceive(DataReceived, UdpServer);
 
 
-                if (sol.TcpServerIpAdress != string.Empty && sol.TcpServerPort != 0)
+                if (Sol.TcpServerIpAdress != string.Empty && Sol.TcpServerPort != 0)
                 {
                     TcpListenThread.Abort();
                     TcpListener.Close();
                 }
-                LastPingJob = DateTime.Now;
+                _lastPingJob = DateTime.Now;
                 Thread.Sleep(2000);
             }
         }
@@ -45,7 +45,7 @@ namespace clientchat
         private void DataReceived(IAsyncResult ar)
         {
             var c = (UdpClient) ar.AsyncState;
-            var receivedIpEndPoint = new IPEndPoint(sol.GetLocalIpAddress(), _udpPort);
+            var receivedIpEndPoint = new IPEndPoint(Sol.GetLocalIpAddress(), _udpPort);
             var receivedBytes = c.EndReceive(ar, ref receivedIpEndPoint);
 
             // Convert data to ASCII and print in console
@@ -61,9 +61,8 @@ namespace clientchat
         {
             try
             {
-                var client = new TcpClient(sol.TcpServerIpAdress, sol.TcpServerPort);
+                var client = new TcpClient(Sol.TcpServerIpAdress, Sol.TcpServerPort);
 
-                var port = ((IPEndPoint) client.Client.RemoteEndPoint).Port;
                 var data = contactId + "||" + message + "||" + Appguid;
                 var nwStream = client.GetStream();
                 var bytesToSend = Encoding.ASCII.GetBytes(data);
@@ -77,17 +76,20 @@ namespace clientchat
 
         private void CheckPingJob()
         {
-            if (!((DateTime.Now - LastPingJob).TotalSeconds < 5)) return;
+            if (!((DateTime.Now - _lastPingJob).TotalSeconds < 5)) return;
             try
             {
-                var listener = new TcpListener(sol.TcpIpAdress, sol.TcpPort);
+                var listener = new TcpListener(Sol.TcpIpAdress, Sol.TcpPort);
                 listener.Start();
                 while (true)
                 {
-                    var client = listener.AcceptSocket();
+                    listener.AcceptSocket();
                 }
             }
-            catch { }
+            catch
+            {
+                // ignored
+            }
         }
 
         public void StartChat()
@@ -119,7 +121,7 @@ namespace clientchat
             } while (contactId == string.Empty);
 
             Console.WriteLine(@"Write messages below. Command to stop chat - 'Stop chat'");
-            var message = string.Empty;
+            string message;
             do
             {
                 message = Appguid + " - " + Console.ReadLine();

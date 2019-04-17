@@ -30,103 +30,104 @@ namespace serverchat.chat
                 var tempChatUser = new ChatUser
                 {
                     Guid = author,
-                    IP = socket.RemoteEndPoint
+                    Ip = socket.RemoteEndPoint
                 };
                 var isAuthorInClients =
-                    clients.FirstOrDefault(x => x.GUID.StartsWith(author, StringComparison.CurrentCultureIgnoreCase));
+                    clients.FirstOrDefault(x => x.Guid.StartsWith(author, StringComparison.CurrentCultureIgnoreCase));
 
-                if (isAuthorInClients != null)
-                {
-                    var isAuthorInChats = chats.FirstOrDefault(x => x._users.Any(y => y.Guid == tempChatUser.Guid));
-                    if (isAuthorInChats != null)
-                    {
-                        tempChatUser = isAuthorInChats._users.FirstOrDefault(x => x.Guid == tempChatUser.Guid);
-                        isAuthorInChats._messages.Add(body);
-                    }
-                    else
-                    {
-                        var toInClients = clients.FirstOrDefault(x => x.GUID == to);
-                        var messageAuthor = clients.FirstOrDefault(x => x.GUID == tempChatUser.Guid);
-                        if (toInClients != null)
-                        {
-                            var isGroupChat = false;
-                            var groupChat = new Chat();
-                            chats.ForEach(x =>
-                            {
-                                isGroupChat = x._users.Any(y => y.Guid == to && x.GroupChat);
-                                if (isGroupChat)
-                                    groupChat = x;
-                            });
-                            if (!isGroupChat)
-                            {
-                                if (messageAuthor != null)
-                                {
-                                    var tempChat = new Chat
-                                    {
-                                        _messages = new List<string> {body},
-                                        _users = new List<ChatUser>
-                                        {
-                                            new ChatUser
-                                            {
-                                                Guid = messageAuthor.GUID,
-                                                IP = messageAuthor.IP
-                                            },
-                                            new ChatUser
-                                            {
-                                                Guid = to,
-                                                IP = toInClients.IP
-                                            }
-                                        }
-                                    };
-                                    chats.Add(tempChat);
-                                }
-                            }
-                            else
-                            {
-                                if (messageAuthor != null)
-                                    groupChat._users.Add(new ChatUser
-                                    {
-                                        Guid = messageAuthor.GUID,
-                                        IP = messageAuthor.IP
-                                    });
-                            }
-                        }
-                        else
-                        {
-                            toInClients = new Client(new IPEndPoint(IPAddress.Any, 0), to, DateTime.Now);
-                            clients.Add(toInClients);
-                            if (messageAuthor != null)
-                            {
-                                var tempChat = new Chat
-                                {
-                                    _messages = new List<string> {body},
-                                    _users = new List<ChatUser>
-                                    {
-                                        new ChatUser
-                                        {
-                                            Guid = messageAuthor.GUID,
-                                            IP = messageAuthor.IP
-                                        },
-                                        new ChatUser
-                                        {
-                                            Guid = to,
-                                            IP = tempChatUser.IP
-                                        }
-                                    },
-                                    GroupChat = true
-                                };
-                                chats.Add(tempChat);
-                            }
-                        }
-                    }
-                }
+                tempChatUser = CheckIfUserSholdBeProcessed(chats, clients, isAuthorInClients, tempChatUser, body, to);
 
                 foreach (var chat in chats)
-                foreach (var user in chat._users)
-                    Console.WriteLine("chat user - " + user.IP);
+                foreach (var user in chat.Users)
+                    Console.WriteLine("chat user - " + user.Ip);
                 ChatListener.SendMessagesToUsers(tempChatUser, chats, clients);
                 socket = tcpListener.AcceptSocket();
             }
+        }
+
+        private ChatUser CheckIfUserSholdBeProcessed(List<Chat> chats, List<Client> clients, Client isAuthorInClients, ChatUser tempChatUser,
+            string body, string to)
+        {
+            if (isAuthorInClients == null) return tempChatUser;
+            var isAuthorInChats = chats.FirstOrDefault(x => x.Users.Any(y => y.Guid == tempChatUser.Guid));
+            if (isAuthorInChats != null)
+            {
+                tempChatUser = isAuthorInChats.Users.FirstOrDefault(x => x.Guid == tempChatUser.Guid);
+                isAuthorInChats.Messages.Add(body);
+            }
+            else
+            {
+                var toInClients = clients.FirstOrDefault(x => x.Guid == to);
+                var messageAuthor = clients.FirstOrDefault(x => x.Guid == tempChatUser.Guid);
+                if (toInClients != null)
+                {
+                    var isGroupChat = false;
+                    var groupChat = new Chat();
+                    chats.ForEach(x =>
+                    {
+                        isGroupChat = x.Users.Any(y => y.Guid == to && x.GroupChat);
+                        if (isGroupChat)
+                            groupChat = x;
+                    });
+                    if (!isGroupChat)
+                    {
+                        if (messageAuthor == null) return tempChatUser;
+                        var tempChat = new Chat
+                        {
+                            Messages = new List<string> {body},
+                            Users = new List<ChatUser>
+                            {
+                                new ChatUser
+                                {
+                                    Guid = messageAuthor.Guid,
+                                    Ip = messageAuthor.Ip
+                                },
+                                new ChatUser
+                                {
+                                    Guid = to,
+                                    Ip = toInClients.Ip
+                                }
+                            }
+                        };
+                        chats.Add(tempChat);
+                    }
+                    else
+                    {
+                        if (messageAuthor != null)
+                            groupChat.Users.Add(new ChatUser
+                            {
+                                Guid = messageAuthor.Guid,
+                                Ip = messageAuthor.Ip
+                            });
+                    }
+                }
+                else
+                {
+                    toInClients = new Client(new IPEndPoint(IPAddress.Any, 0), to, DateTime.Now);
+                    clients.Add(toInClients);
+                    if (messageAuthor == null) return tempChatUser;
+                    var tempChat = new Chat
+                    {
+                        Messages = new List<string> {body},
+                        Users = new List<ChatUser>
+                        {
+                            new ChatUser
+                            {
+                                Guid = messageAuthor.Guid,
+                                Ip = messageAuthor.Ip
+                            },
+                            new ChatUser
+                            {
+                                Guid = to,
+                                Ip = tempChatUser.Ip
+                            }
+                        },
+                        GroupChat = true
+                    };
+                    chats.Add(tempChat);
+                }
+            }
+            return tempChatUser;
         }
     }
 }

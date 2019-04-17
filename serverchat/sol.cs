@@ -12,13 +12,6 @@ namespace serverchat
         public static IPAddress UpdAddress = GetLocalIpAddress();
 
 
-        private static IPAddress GetExternalIp()
-        {
-            var externalip = new WebClient().DownloadString("http://icanhazip.com");
-            externalip = externalip.TrimEnd('\n');
-            return IPAddress.Parse(externalip);
-        }
-
         private static IPAddress GetLocalIpAddress()
         {
             var ipv4Addresses = Array.FindAll(

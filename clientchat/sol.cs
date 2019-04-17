@@ -5,13 +5,12 @@ using System.Net.Sockets;
 
 namespace clientchat
 {
-    public class sol
+    public class Sol
     {
-        public static IPAddress TcpIpAdress => GetLocalIpAddress();
-        public static int TcpPort => 30000;//GetRandomUnusedPort();
-
         public static string TcpServerIpAdress = string.Empty;
         public static int TcpServerPort = 0;
+        public static IPAddress TcpIpAdress => GetLocalIpAddress();
+        public static int TcpPort => 30000;//GetRandomUnusedPort();
 
         public static IPAddress GetLocalIpAddress()
         {
@@ -20,18 +19,9 @@ namespace clientchat
                 a => a.AddressFamily == AddressFamily.InterNetwork);
 
             var localIp = ipv4Addresses.FirstOrDefault(x => x.ToString().Contains("192"));
-            if(localIp != null)
+            if (localIp != null)
                 return localIp;
             throw new Exception("No network adapters with an IPv4 address in the system!");
-        }
-
-        private static int GetRandomUnusedPort()
-        {
-            var listener = new TcpListener(GetLocalIpAddress(), 0);
-            listener.Start();
-            var port = ((IPEndPoint)listener.LocalEndpoint).Port;
-            listener.Stop();
-            return port;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace serverchat.clientdiscovery
             {
                 foreach (var client in serverListener.Clients)
                     if ((DateTime.Now - client.LastPing).TotalSeconds < 3)
-                        Console.WriteLine($"IP - {client.IP} Client ID - {client.GUID}\n");
+                        Console.WriteLine($"IP - {client.Ip} Client ID - {client.Guid}\n");
             }
 
 

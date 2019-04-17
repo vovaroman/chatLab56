@@ -7,13 +7,13 @@ namespace serverchat.clientdiscovery
     {
         public Client(IPEndPoint ip, string guid, DateTime lastPing)
         {
-            IP = ip;
-            GUID = guid;
+            Ip = ip;
+            Guid = guid;
             LastPing = lastPing;
         }
 
-        public IPEndPoint IP { get; set; }
-        public string GUID { get; }
+        public IPEndPoint Ip { get; set; }
+        public string Guid { get; }
 
         public DateTime LastPing { get; set; }
     }

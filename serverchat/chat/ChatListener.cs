@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using serverchat.chat;
+using serverchat.clientdiscovery;
 
-namespace serverchat.clientdiscovery
+namespace serverchat.chat
 {
     public class ChatListener
     {
-        public static List<Chat> chats = new List<Chat>();
+        public static List<Chat> Chats = new List<Chat>();
 
         public void StartChat(List<Client> clients)
         {
             var listenMessages = new ListenMessages();
-            listenMessages.Listen(chats, clients);
+            listenMessages.Listen(Chats, clients);
         }
 
 
@@ -23,27 +23,26 @@ namespace serverchat.clientdiscovery
             //ServerListener.receiver
             foreach (var chat in chats)
             {
-                chat._users.ForEach(user =>
+                chat.Users.ForEach(user =>
                 {
-                    string[] separators = {":"};
-                    var ipAndPort = user.IP.ToString().Split(separators, StringSplitOptions.None);
-                    var address = clients.FirstOrDefault(x => x.GUID == user.Guid);
+                    var address = clients.FirstOrDefault(x => x.Guid == user.Guid);
                     if (address != null && author.Guid != user.Guid)
-                        chat._messages.ForEach(message =>
+                        chat.Messages.ForEach(message =>
                         {
                             try
                             {
-                                ServerListener.receiver.Send(Encoding.ASCII.GetBytes(message), message.Length,
-                                    address.IP.Address.ToString(), address.IP.Port);
+                                ServerListener.Receiver.Send(Encoding.ASCII.GetBytes(message), message.Length,
+                                    address.Ip.Address.ToString(), address.Ip.Port);
                             }
                             catch (Exception ex)
                             {
+                                // ignored
                             }
 
                             //udpServer.Send(Encoding.ASCII.GetBytes(message), message.Length, user.IP), UDPServerPort);)
                         });
                 });
-                chat._messages = new List<string>();
+                chat.Messages = new List<string>();
             }
         }
     }
